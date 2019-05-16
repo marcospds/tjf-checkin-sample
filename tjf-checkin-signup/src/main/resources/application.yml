@@ -5,7 +5,7 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/checkin
+    url: jdbc:postgresql://10.0.75.2:5432/checkin
     username: checkin
     password: checkin!123
   
@@ -16,10 +16,7 @@ spring:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-    properties:      
-      hibernate:
-        jdbc:
-          lob:
-            non_contextual_creation: true # https://github.com/spring-projects/spring-boot/issues/12007
+      ddl-auto: update      
+
 server:
   port: 8280
