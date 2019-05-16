@@ -14,14 +14,16 @@
 	<artifactId>tjf-checkin-survey</artifactId>
 
 	<dependencies>
+
+		<!-- TJF -->
 		<dependency>
 			<groupId>com.totvs.tjf</groupId>
 			<artifactId>tjf-api-core</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>com.totvs.tjf</groupId>
-			<artifactId>tjf-core-money</artifactId>
+			<artifactId>tjf-api-jpa</artifactId>
 		</dependency>
 
 		<dependency>
@@ -29,9 +31,15 @@
 			<artifactId>tjf-core-validation</artifactId>
 		</dependency>
 
+		<!-- Spring -->
 		<dependency>
-			<groupId>com.totvs.tjf</groupId>
-			<artifactId>tjf-security-web</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
 		<!-- Swagger -->
@@ -43,6 +51,19 @@
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-bean-validators</artifactId>
+		</dependency>
+
+		<!-- External -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Database -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 
 	</dependencies>
