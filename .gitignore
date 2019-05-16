@@ -1,5 +1,3 @@
-/docker/cash-pg-data
-/docker/cash-rabbitmq-data
 **/.attach_pid*
 *.java.hsp
 *.sonarj
