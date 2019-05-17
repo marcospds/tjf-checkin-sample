@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,18 +26,21 @@ public class SurveyModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@NotNull
+	@NotNull(message = "{SurveyModel.email.NotNull}")
+	@NotBlank(message = "{SurveyModel.email.NotBlank}")
 	private String email;
 	
-	@NotNull
+	@NotNull(message = "{SurveyModel.event.NotNull}")
+	@NotBlank(message = "{SurveyModel.event.NotBlank}")
 	private String event;
 	
-	@NotNull
-	@Min(value = 0)
-	@Max(value = 5)
+	@NotNull(message = "{SurveyModel.note.NotNull}")
+	@NotBlank(message = "{SurveyModel.note.NotBlank}")
+	@Min(value = 0, message = "{SurveyModel.note.MinValue}")
+	@Max(value = 5, message = "{SurveyModel.note.MaxValue}")
 	private Integer note;
 	
-	@Size(max = 400)
+	@Size(max = 400, message = "{SurveyModel.description.MaxSize}")
 	private String description;
 	
 }
