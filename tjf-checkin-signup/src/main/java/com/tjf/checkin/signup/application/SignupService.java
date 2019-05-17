@@ -31,7 +31,13 @@ public class SignupService {
     public ParticipantModel signup(ParticipantModel participant) {
         
         if(existsParticipantByNameOrMacAdress(participant.getName(), participant.getMacAddress())){
-            System.out.println("existe");
+            System.out.println("##############################");
+            System.out.println("exist");
+            System.out.println("##############################");
+        } else {
+            System.out.println("##############################");
+            System.out.println("no exist");
+            System.out.println("##############################");
         }
         
         return repository.save(participant);
