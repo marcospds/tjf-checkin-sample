@@ -35,7 +35,6 @@ public class SurveyModel implements Serializable {
 	private String event;
 	
 	@NotNull(message = "{SurveyModel.note.NotNull}")
-	@NotBlank(message = "{SurveyModel.note.NotBlank}")
 	@Min(value = 0, message = "{SurveyModel.note.MinValue}")
 	@Max(value = 5, message = "{SurveyModel.note.MaxValue}")
 	private Integer note;
