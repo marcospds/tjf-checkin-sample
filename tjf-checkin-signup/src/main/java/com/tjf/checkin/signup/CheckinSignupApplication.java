@@ -13,5 +13,4 @@ public class CheckinSignupApplication {
     public static void main(String[] args) {
         SpringApplication.run(CheckinSignupApplication.class, args);
     }
-
 }
