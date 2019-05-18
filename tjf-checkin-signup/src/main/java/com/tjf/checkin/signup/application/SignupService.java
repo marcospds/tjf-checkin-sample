@@ -30,57 +30,46 @@ public class SignupService {
 
     public ParticipantModel signup(ParticipantModel participant) {
         
-        if(existsParticipantByNameOrMacAdress(participant.getName(), participant.getMacAddress())){
+        if(existsParticipantByEmailOrMacAdress(participant.getEmail(), participant.getMacAddress())){
             System.out.println("##############################");
             System.out.println("exist");
             System.out.println("##############################");
+            throw new RuntimeException("Duplicado email ou macAddress");
         } else {
             System.out.println("##############################");
             System.out.println("no exist");
             System.out.println("##############################");
-        }
-        
-        return repository.save(participant);
+            return repository.save(participant);
+        }       
     }
     
-    public boolean isValid(ParticipantModel participant) {
-        
-        return true;
-    }
-    
-    boolean existsParticipantByNameOrMacAdress(String name, String macAddress) {
+    private boolean existsParticipantByEmailOrMacAdress(String email, String macAddress) {
         
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        
         CriteriaQuery<Boolean> query = criteriaBuilder.createQuery(Boolean.class);
-        query.from(ParticipantModel.class);
+        Root<ParticipantModel> participantRoot = query.from(ParticipantModel.class);
+        
+        Predicate emailPredicate = criteriaBuilder.equal(participantRoot.get("email"), email);
+        Predicate macAddressPredicate = criteriaBuilder.equal(participantRoot.get("macAddress"), macAddress);
+        Predicate orPredicate = criteriaBuilder.or(emailPredicate, macAddressPredicate);
+        
         query.select(criteriaBuilder.literal(true));
-        
-        Subquery<ParticipantModel> subquery = query.subquery(ParticipantModel.class);
- 
-        Root<ParticipantModel> participant = subquery.from(ParticipantModel.class);
-        
-        Predicate authorNamePredicate = criteriaBuilder.equal(participant.get("name"), name);
-        Predicate titlePredicate = criteriaBuilder.equal(participant.get("macAddress"), macAddress);
-        Predicate orTitlePredicate = criteriaBuilder.or(titlePredicate);
-        
-        subquery.where(authorNamePredicate, orTitlePredicate);        
-        
-        query.where(criteriaBuilder.exists(subquery));
-        
-        subquery.select(participant);
+        query.where(orPredicate);        
         
         TypedQuery<Boolean> typedQuery = em.createQuery(query);
         
+        boolean exists = false;
+        
         try {
-            // There's one
-            return typedQuery.getSingleResult();
+            exists = typedQuery.getSingleResult();
         } catch(NoResultException exception) {
-            // Zero
-            return false;
+            exists = false;
         } catch(NonUniqueResultException exception) {
-            // More than one
-            return true;
+            exists = true;
         }
+        
+        em.close();
+        
+        return exists;
     }
 }
