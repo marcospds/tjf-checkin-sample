@@ -1,5 +1,6 @@
 package com.tjf.checkin.survey.api;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import com.tjf.checkin.survey.repository.SurveyModel;
 import com.totvs.tjf.api.context.stereotype.ApiGuideline;
 import com.totvs.tjf.api.context.stereotype.ApiGuideline.ApiGuidelineVersion;
 import com.totvs.tjf.core.validation.ValidatorService;
-import static org.springframework.http.HttpStatus.CREATED;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
