@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "participant")
-
 public class ParticipantModel {
 
     @Id
@@ -32,9 +31,11 @@ public class ParticipantModel {
 
     @NotBlank(message = "{ParticipantModel.email.NotBlank}")
     @Email(message = "{ParticipantModel.email.EmailBadFormed}")
+    @Column(unique = true)
     private String email;
 
     @NotBlank(message = "{ParticipantModel.macAddress.NotBlank}")
+    @Column(unique = true)
     private String macAddress;
 
     @NotBlank(message = "{ParticipantModel.name.NotBlank}")

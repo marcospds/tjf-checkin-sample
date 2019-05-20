@@ -9,12 +9,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tjf.checkin.signup.exception.ParticipantNonUniqueResultException;
 import com.tjf.checkin.signup.repository.ParticipantModel;
 import com.tjf.checkin.signup.repository.ParticipantRepository;
 
@@ -23,42 +23,27 @@ import com.tjf.checkin.signup.repository.ParticipantRepository;
 public class SignupService {
 
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
     
     @Autowired
     private ParticipantRepository repository;
 
-    public ParticipantModel signup(ParticipantModel participant) {
-        
-        if(existsParticipantByEmailOrMacAdress(participant.getEmail(), participant.getMacAddress())){
-            System.out.println("##############################");
-            System.out.println("exist");
-            System.out.println("##############################");
-            throw new RuntimeException("Duplicado email ou macAddress");
-        } else {
-            System.out.println("##############################");
-            System.out.println("no exist");
-            System.out.println("##############################");
-            return repository.save(participant);
-        }       
+    public ParticipantModel signup(ParticipantModel participant) {        
+        validUniqueParticipant(participant);
+        return repository.save(participant);
+    }
+    
+    private void validUniqueParticipant (ParticipantModel participant) {        
+        if(existsParticipantByEmailOrMacAdress(participant.getEmail(), participant.getMacAddress()))
+            throw new ParticipantNonUniqueResultException();
     }
     
     private boolean existsParticipantByEmailOrMacAdress(String email, String macAddress) {
         
-        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<Boolean> query = criteriaBuilder.createQuery(Boolean.class);
-        Root<ParticipantModel> participantRoot = query.from(ParticipantModel.class);
+        boolean exists;
         
-        Predicate emailPredicate = criteriaBuilder.equal(participantRoot.get("email"), email);
-        Predicate macAddressPredicate = criteriaBuilder.equal(participantRoot.get("macAddress"), macAddress);
-        Predicate orPredicate = criteriaBuilder.or(emailPredicate, macAddressPredicate);
-        
-        query.select(criteriaBuilder.literal(true));
-        query.where(orPredicate);        
-        
-        TypedQuery<Boolean> typedQuery = em.createQuery(query);
-        
-        boolean exists = false;
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        TypedQuery<Boolean> typedQuery = createQueryByEmailOrMacAdress(criteriaBuilder, email, macAddress);
         
         try {
             exists = typedQuery.getSingleResult();
@@ -68,8 +53,27 @@ public class SignupService {
             exists = true;
         }
         
-        em.close();
+        entityManager.close();
         
         return exists;
+    }
+    
+    private TypedQuery<Boolean> createQueryByEmailOrMacAdress(CriteriaBuilder criteriaBuilder, String email,
+            String macAddress) {
+
+        CriteriaQuery<Boolean> query = criteriaBuilder.createQuery(Boolean.class);
+        query.select(criteriaBuilder.literal(true));
+        Root<ParticipantModel> participantRoot = query.from(ParticipantModel.class);
+        query.where(createPredicateByEmailOrMacAdress(criteriaBuilder, participantRoot, email, macAddress));
+
+        return entityManager.createQuery(query);
+    }
+
+    private Predicate createPredicateByEmailOrMacAdress(CriteriaBuilder criteriaBuilder,
+            Root<ParticipantModel> participantRoot, String email, String macAddress) {
+        
+        Predicate emailPredicate = criteriaBuilder.equal(participantRoot.get("email"), email);
+        Predicate macAddressPredicate = criteriaBuilder.equal(participantRoot.get("macAddress"), macAddress);
+        return criteriaBuilder.or(emailPredicate, macAddressPredicate);
     }
 }

@@ -7,12 +7,12 @@ import javax.validation.ConstraintViolationException;
 
 import com.totvs.tjf.api.context.stereotype.error.ApiBadRequest;
 
-@ApiBadRequest("SignupContraintException")
-public class SignupContraintException extends ConstraintViolationException {
+@ApiBadRequest("ParticipantContraintException")
+public class ParticipantContraintException extends ConstraintViolationException {
 
     private static final long serialVersionUID = 2071517040052831080L;
 
-    public SignupContraintException(Set<? extends ConstraintViolation<?>> constraintViolations) {
+    public ParticipantContraintException(Set<? extends ConstraintViolation<?>> constraintViolations) {
         super(constraintViolations);
     }
 }

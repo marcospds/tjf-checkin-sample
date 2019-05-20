@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.totvs.tjf.api.context.stereotype.ApiGuideline;
 import com.tjf.checkin.signup.application.SignupService;
-import com.tjf.checkin.signup.exception.SignupContraintException;
+import com.tjf.checkin.signup.exception.ParticipantContraintException;
 import com.tjf.checkin.signup.repository.ParticipantModel;
 import com.tjf.checkin.signup.repository.ParticipantRepository;
 import com.totvs.tjf.core.validation.ValidatorService;
@@ -35,7 +35,7 @@ public class SignupController {
     public ParticipantModel signUp(@RequestBody ParticipantModel participant) {
         
         validator.validate(participant).ifPresent(violations -> { 
-            throw new SignupContraintException(violations); 
+            throw new ParticipantContraintException(violations); 
         });
         
         return service.signup(participant);
