@@ -9,7 +9,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,22 +41,15 @@ public class SurveyService {
 
 		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
 
-		CriteriaQuery<Boolean> query = criteriaBuilder.createQuery(Boolean.class);
-		query.from(SurveyModel.class);
+		CriteriaQuery<Boolean> query = criteriaBuilder.createQuery(Boolean.class);;
 		query.select(criteriaBuilder.literal(true));
 
-		Subquery<SurveyModel> subquery = query.subquery(SurveyModel.class);
-
-		Root<SurveyModel> survey = subquery.from(SurveyModel.class);
+		Root<SurveyModel> survey = query.from(SurveyModel.class);
 
 		Predicate emailNamePredicate = criteriaBuilder.equal(survey.get("email"), email);
 		Predicate eventPredicate = criteriaBuilder.equal(survey.get("event"), event);
 
-		subquery.where(emailNamePredicate, eventPredicate);
-
-		query.where(criteriaBuilder.exists(subquery));
-
-		subquery.select(survey);
+		query.where(emailNamePredicate, eventPredicate);
 
 		TypedQuery<Boolean> typedQuery = em.createQuery(query);
 
