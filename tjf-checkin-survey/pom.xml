@@ -65,7 +65,13 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
-
 	</dependencies>
-
+    
+    <repositories>
+        <repository>
+            <id>central-release</id>
+            <name>TOTVS Java Framework: Release</name>
+            <url>http://maven.engpro.totvs.com.br/artifactory/libs-release</url>
+        </repository>
+    </repositories>
 </project>
