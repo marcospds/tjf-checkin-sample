@@ -41,7 +41,7 @@ De acordo com as configurações, o serviço será exposto na URL http://localho
 
 ```
 {
-	"email": "parcipante@email.com",
+	"email": "participante@email.com",
 	"macAddress": "C3-5B-28-43-C2-82",
 	"name": "Nome do participante",
 	"provider": "fornecedor"
