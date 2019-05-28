@@ -53,6 +53,7 @@ De acordo com as configurações, o serviço será exposto na URL http://localho
 #### Validações
 
 O serviço valida caso o mesmo Email já tenha sido informado.
+
 O serviço também valida caso o mesmo endereço MAC já tenha sido informado.
 
 ## Licença
